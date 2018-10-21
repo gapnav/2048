@@ -1,5 +1,5 @@
 <template lang="pug">
-  .field
+  .field(v-bind:class="{live: game_field.live}")
     .row(v-for="y in game_field.height()" v-bind:key="'row_'+(y-1)")
       cell(
         v-for="x in game_field.width()"
@@ -25,12 +25,16 @@
 
 <style lang="scss">
   .field {
+    opacity: 0.7;
     background-color: #444444;
     display: table;
     border-collapse:separate;
     border-spacing:5px;
     .row {
       display: table-row;
+    }
+    &.live{
+      opacity: 1;
     }
   }
 </style>

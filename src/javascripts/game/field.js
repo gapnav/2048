@@ -9,8 +9,10 @@ export default function() {
 
   this.points = 0;
   this.moves = 0;
+  this.live = true;
 
   this.move = (direction) => {
+    if (!this.live) return;
     let movement = new Movement(this, direction);
     movement.move();
     if (movement.moves) {
@@ -18,6 +20,7 @@ export default function() {
       this.moves++;
       this.points += movement.points;
     }
+    updateLive();
   }
 
   this.width = () => {
@@ -77,6 +80,21 @@ export default function() {
   let setByIndex = (i, cell_number) => {
     let [x, y] = iToXY(i);
     return this.field[y][x] = cell_number;
+  }
+
+  let updateLive = () => {
+    for(let y = HEIGHT - 1; y > 0; y--){
+      for(let x = WIDTH - 1; x > -1; x--){
+        if (!this.field[y][x]) return;
+        if (!this.field[y-1][x]) return;
+        if (this.field[y][x].canJoinWith(this.field[y-1][x])) return;
+        if (x){
+          if (!this.field[y][x-1]) return;
+          if (this.field[y][x].canJoinWith(this.field[y][x-1])) return;
+        }
+      }
+    }
+    this.live = false;
   }
 
   initField();
