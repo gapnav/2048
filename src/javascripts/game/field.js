@@ -1,10 +1,28 @@
 import CellNumber from './cell_number'
+import Movement from './movement'
 
 export default function() {
   const WIDTH = 4
   const HEIGHT = 4
   const SIZE = WIDTH * HEIGHT;
   const INITIAL_CELLS_FILLED = 2
+
+  this.points = 0;
+
+  this.move = (direction) => {
+    let movement = new Movement(this, direction);
+    movement.move();
+    if (movement.moves) addCellNumber();
+    this.points += movement.points;
+  }
+
+  this.width = () => {
+    return WIDTH;
+  }
+
+  this.height = () => {
+    return HEIGHT;
+  }
 
   let initField = () => {
     this.field = [];

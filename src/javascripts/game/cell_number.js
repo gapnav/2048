@@ -1,4 +1,17 @@
 export default function(init_val) {
+  this.canJoinWith = (other) => {
+    return this.value === other.value;
+  }
+
+  this.joinWith = (other) => {
+    if (this.canJoinWith(other)){
+      this.value += other.value;
+      return this.value;
+    } else {
+      return null;
+    }
+  }
+
   let initValue = (val) => {
     if (typeof val === 'undefined'){
       setRandomValue();
