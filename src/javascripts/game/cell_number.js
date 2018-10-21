@@ -33,7 +33,7 @@ export default function(init_val) {
     let result = parseInt(val);
     if (result) {
       let log2 = Math.log2(result);
-      if (!log2 || log2 < 2 || Math.ceil(log2) !== log2) result = null;
+      if (!log2 || log2 < 1 || Math.ceil(log2) !== log2) result = null;
     }
     if (result) {
       this.value = result;

@@ -8,12 +8,16 @@ export default function() {
   const INITIAL_CELLS_FILLED = 2
 
   this.points = 0;
+  this.moves = 0;
 
   this.move = (direction) => {
     let movement = new Movement(this, direction);
     movement.move();
-    if (movement.moves) addCellNumber();
-    this.points += movement.points;
+    if (movement.moves) {
+      addCellNumber();
+      this.moves++;
+      this.points += movement.points;
+    }
   }
 
   this.width = () => {
@@ -35,6 +39,10 @@ export default function() {
       this.field.push(col);
     }
 
+    // for(let i = 16; i > 0; i--){
+    //   let [x, y] = iToXY(i);
+    //   this.field[y][x] = new CellNumber(2**i);
+    // }
     for(let i = INITIAL_CELLS_FILLED; i; i--) addCellNumber();
   }
 

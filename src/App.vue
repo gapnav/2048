@@ -1,21 +1,21 @@
 <template lang="pug">
   #app
     p Points: {{ game_field.points }}
-    button(v-on:click="toggleShow") show
-    table.field(v-if="game_field && show")
-      tr(v-for="row in field")
-        td(v-for="cell in row") {{ cell ? cell.value : '&nbsp;&nbsp;&nbsp;' }}
+    .wrapper
+      field(v-if="game_field" v-bind:game_field="game_field")
 
 </template>
 
 <script>
-  import Field from '@/javascripts/game/field';
+  import GameField from '@/javascripts/game/field';
+  import Field from './components/field';
 
   export default {
+    components: { Field },
+
     data(){
       return {
-        game_field: null,
-        show: true
+        game_field: null
       }
     },
 
@@ -26,7 +26,7 @@
     },
 
     created(){
-      this.game_field = new Field();
+      this.game_field = new GameField();
 
       window.onkeyup = (e) => {
         switch (e.keyCode) {
@@ -44,17 +44,20 @@
             break;
         } // switch e.keyCode
       } // onkeyup
-    },
-
-    methods: {
-      toggleShow(){
-        this.show = !this.show;
-      }
     }
   }
 </script>
 
 <style lang="scss">
+  html {
+    background: #333333;
+    color: #ffffff;
+  }
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
   #app {
     table, th, td {
       border: 1px solid black;
