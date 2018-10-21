@@ -41,16 +41,19 @@ export default function(field, direction) {
   let moveLine = (cellsXY) => {
     let cells = cellsXY.map(xy => field.field[xy[1]][xy[0]]);
     let new_cells = [];
+    let joined = false; // flag is to prevent second join into same cell
     cells.filter(c => !!c).forEach(cell => {
-      if (new_cells[0] && new_cells[0].canJoinWith(cell)){
+      if (new_cells[0] && !joined && new_cells[0].canJoinWith(cell)){
         this.points += new_cells[0].joinWith(cell);
+        joined = true;
       } else {
         new_cells.unshift(cell);
+        joined = false;
       }
     });
     while(new_cells.length < cells.length) new_cells.unshift(null);
-    new_cells = new_cells.reverse();
-    this.moves += trailingNullsCount(new_cells) - trailingNullsCount(new_cells);
+    new_cells.reverse();
+    this.moves += trailingNullsCount(new_cells) - trailingNullsCount(cells);
 
     cellsXY.forEach(xy => {
       field.field[xy[1]][xy[0]] = new_cells.shift();
@@ -79,7 +82,7 @@ export default function(field, direction) {
   }
 
   let trailingNullsCount = (arr) => {
-    let count = arr.reverse().findIndex(x => !!x);
+    let count = arr.slice().reverse().findIndex(x => !!x);
     if (count < 0) count = arr.length;
     return count;
   }
